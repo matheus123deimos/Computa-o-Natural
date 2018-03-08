@@ -57,7 +57,7 @@ class Cromossomo(object):
             for _ in range(C.getMAX()):
             #u = randint(0,1), Peso Negativo
                 if(C.getG().getVar()== 'F'):
-                    cord.append((randint(x1,x2-1)+(randint(0,10**Cas_Dec)/10**Cas_Dec)))
+                    cord.append((randint(x1,x2-1)+(randint(-10**Cas_Dec,10**Cas_Dec)/10**Cas_Dec)))
                 else:
                     cord.append(randint(x1,x2))
             C.corda = cord
