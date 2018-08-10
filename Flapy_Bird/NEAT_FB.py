@@ -9,37 +9,41 @@ from flappybird import *
 
 VET_MED =[]
 VET_BEST = []
+NC = 10
 
 #CENARIO = Cena_Flp(7,0.12)
 #CENARIO.preenche()
 
+#Crio um Vetor de Cenários de tamanho 10 com 5 tubos e velocidade 0.12
+CENARIO = [Cena_Flp(7,0.12)for _ in range(NC)]
+
+#Preenche cada cenário com os tubos
+for i in range(NC):
+        CENARIO[i].preenche()
+        
 def eval_genomes(genomes, config):
     
     VT_NET = []
-    SCORE = []
-    NC = 5
-    CENARIO = [Cena_Flp(7,0.12)for _ in range(NC)]
-    for i in range(NC):
-        CENARIO[i].preenche()
+    SCORE = []# vetor de Scores da população
         
-    for genome_id,genome in genomes:
+    for genome_id,genome in genomes:#Decoifica os Genomas em Redes
         VT_NET.append(neat.nn.FeedForwardNetwork.create(genome, config))
         
     for net,pair in zip(VT_NET,genomes): 
         score = []
         pont = []
         for i in range(NC):
-            P,s  = flappyenv(net,CENARIO[i])
-            score.append(s)
-            pont.append(P)
+            P,s  = flappyenv(net,CENARIO[i])# Utilizo a cada rede da população em um conjunto de cenários
+            score.append(s)# Guardo os scores (Quantidade de tubos)
+            pont.append(P)#guardo a pontuação
             
-        SCORE.append(sum(score))
-        pair[1].fitness = sum(pont)
+        SCORE.append(median(score))#Adiciono a média dos scores do agente ao vetor de scores da população
+        pair[1].fitness = median(pont)#Defino o fitness desse genoma
  
-    VET_MED.append(median(SCORE))
-    VET_BEST.append(max(SCORE))
+    VET_MED.append(median(SCORE))# Adiciono a média dos scores da população a um vetor de médias para plotagem
+    VET_BEST.append(max(SCORE))#Busco o que obteve o maior score e guardo pra plotagem
     print(max(SCORE))
-   
+    print(median(SCORE))
          
 def run(config_file):
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
@@ -47,7 +51,7 @@ def run(config_file):
                          config_file)
 
 
-    p = neat.Population(config)
+    p = neat.Population(config) #Defino a população de genomas
 
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
@@ -55,7 +59,7 @@ def run(config_file):
     p.add_reporter(neat.Checkpointer(5))
 
     
-    winner = p.run(eval_genomes,150)
+    winner = p.run(eval_genomes,150) #Retorna o melhor depois de 150 gerações
 
     print('\nBest genome:\n{!s}'.format(winner))
 
@@ -72,7 +76,7 @@ def run(config_file):
     plt.xlabel("GERACAO",fontsize=14)
     plt.ylabel("P_M&P_B/Geracao",fontsize=14)
     plt.tick_params(axis='both',which = 'major',labelsize=5)
-    plt.axis([1,(len(VET_MED)+1),0,25.1],fontsize=25)
+    plt.axis([1,(len(VET_MED)+1),0,5.1],fontsize=25)
     plt.savefig('G.png') 
     plt.show()
 
