@@ -17,8 +17,10 @@ from ple.games import *
 VET_MED =[]
 VET_BEST = []
 NC = 10
-GAME = FlappyBird()
+INIT_GAP = [randint(25,192) for j in range(13)]
+GAME = FlappyBird(True,INIT_GAP,13)
 ENV = PLE(GAME)
+GAP = [[randint(25,192) for j in range(13)]for i in range(NC)]# Cálculo baseado nos atributos da classe flappy
 
 def eval_genomes(genomes, config):
     
@@ -32,11 +34,12 @@ def eval_genomes(genomes, config):
         score = []
         pont = []
         ENV.init()
+        
         for i in range(NC):
             Score = 0.0
             Pont = 0.0
             Fator_y = 0.0
-            while(Score <= 100.0):
+            while(Score <= 13.0):
                 #Armazene o Estado pré-Rede;Repasse para a Rede; Obtenha sua Resposta
                 State1 = ENV.game.getGameState()
                 INP1 = State1["next_pipe_dist_to_player"]
@@ -53,10 +56,10 @@ def eval_genomes(genomes, config):
                     Score += RESP
 
                 Pont += 1.0
-                if(ENV.game_over()):#Se for gave_over() o estado pós-Rede é filtrado
+                if(ENV.game_over()):#Se for game_over() o estado pós-Rede é filtrado
                     State2 = ENV.game.getGameState()
                     Fator_y = State2["player_y"] - (State2["next_pipe_top_y"]+(State2["next_pipe_top_y"]-State2["next_pipe_bottom_y"])/2)
-                    ENV.reset_game()
+                    ENV.reset_game(GAP[i],13)
                     break
             
             score.append(Score)# Guardo os scores (Quantidade de tubos)
