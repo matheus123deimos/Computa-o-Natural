@@ -2,14 +2,14 @@
 [NEAT]
 fitness_criterion     = max
 fitness_threshold     = 12500
-pop_size              = 50
+pop_size              = 15
 reset_on_extinction   = 0
 
 [DefaultGenome]
 # node activation options
-activation_default      = tanh
+activation_default      = sigmoid
 activation_mutate_rate  = 0.0
-activation_options      = tanh
+activation_options      = sigmoid
 
 # node aggregation options
 aggregation_default     = sum
@@ -17,10 +17,10 @@ aggregation_mutate_rate = 0.0
 aggregation_options     = sum
 
 # node bias options
-bias_init_mean          = 0.0
+bias_init_mean          = 0.01
 bias_init_stdev         = 1.0
-bias_max_value          = 30.0
-bias_min_value          = -30.0
+bias_max_value          = 100.0
+bias_min_value          = -100.0
 bias_mutate_power       = 0.5
 bias_mutate_rate        = 0.7
 bias_replace_rate       = 0.1
@@ -31,22 +31,22 @@ compatibility_weight_coefficient   = 0.5
 
 # connection add/remove rates
 conn_add_prob           = 0.5
-conn_delete_prob        = 0.2
+conn_delete_prob        = 0.5
 
 # connection enable options
 enabled_default         = True
-enabled_mutate_rate     = 0.02
+enabled_mutate_rate     = 0.05
 
 feed_forward            = True
 initial_connection      = full
 
 # node add/remove rates
-node_add_prob           = 0.5
+node_add_prob           = 0.2
 node_delete_prob        = 0.2
 
 # network parameters
 num_hidden              = 0
-num_inputs              = 2
+num_inputs              = 3
 num_outputs             = 1
 
 # node response options
@@ -61,8 +61,8 @@ response_replace_rate   = 0.0
 # connection weight options
 weight_init_mean        = 0.0
 weight_init_stdev       = 1.0
-weight_max_value        = 30.0
-weight_min_value        = -30.0
+weight_max_value        = 100.0
+weight_min_value        = -100.0
 weight_mutate_power     = 0.5
 weight_mutate_rate      = 0.8
 weight_replace_rate     = 0.1
@@ -76,6 +76,6 @@ max_stagnation       = 10
 species_elitism      = 1
 
 [DefaultReproduction]
-elitism            = 25
-survival_threshold = 0.10
+elitism            = 9
+survival_threshold = 0.09
 
